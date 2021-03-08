@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="catalogoModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="categoria">
+    <Key>
+      <PropertyRef Name="id_categoria" />
+    </Key>
+    <Property Name="id_categoria" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="categoria" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="categoria_padre" Type="int" />
+  </EntityType>
+  <EntityType Name="categoria_productos">
+    <Key>
+      <PropertyRef Name="id_producto" />
+      <PropertyRef Name="id_categoria" />
+    </Key>
+    <Property Name="id_producto" Type="int" Nullable="false" />
+    <Property Name="id_categoria" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="producto">
+    <Key>
+      <PropertyRef Name="id_producto" />
+    </Key>
+    <Property Name="id_producto" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="nombre_producto" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="descripcion" Type="varchar(max)" Nullable="false" />
+    <Property Name="tipo" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tipo">
+    <Key>
+      <PropertyRef Name="id_tipo" />
+    </Key>
+    <Property Name="id_tipo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="nombre" Type="varchar" MaxLength="100" Nullable="false" />
+  </EntityType>
+  <Association Name="FK__categoria__categ__403A8C7D">
+    <End Role="categoria" Type="Self.categoria" Multiplicity="0..1" />
+    <End Role="categoria1" Type="Self.categoria" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="categoria">
+        <PropertyRef Name="id_categoria" />
+      </Principal>
+      <Dependent Role="categoria1">
+        <PropertyRef Name="categoria_padre" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__categoria__id_ca__46E78A0C">
+    <End Role="categoria" Type="Self.categoria" Multiplicity="1" />
+    <End Role="categoria_productos" Type="Self.categoria_productos" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="categoria">
+        <PropertyRef Name="id_categoria" />
+      </Principal>
+      <Dependent Role="categoria_productos">
+        <PropertyRef Name="id_categoria" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__categoria__id_pr__45F365D3">
+    <End Role="producto" Type="Self.producto" Multiplicity="1" />
+    <End Role="categoria_productos" Type="Self.categoria_productos" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="producto">
+        <PropertyRef Name="id_producto" />
+      </Principal>
+      <Dependent Role="categoria_productos">
+        <PropertyRef Name="id_producto" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__producto__tipo__440B1D61">
+    <End Role="tipo" Type="Self.tipo" Multiplicity="1" />
+    <End Role="producto" Type="Self.producto" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tipo">
+        <PropertyRef Name="id_tipo" />
+      </Principal>
+      <Dependent Role="producto">
+        <PropertyRef Name="tipo" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="catalogoModelStoreContainer">
+    <EntitySet Name="categoria" EntityType="Self.categoria" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="categoria_productos" EntityType="Self.categoria_productos" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="producto" EntityType="Self.producto" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tipo" EntityType="Self.tipo" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK__categoria__categ__403A8C7D" Association="Self.FK__categoria__categ__403A8C7D">
+      <End Role="categoria" EntitySet="categoria" />
+      <End Role="categoria1" EntitySet="categoria" />
+    </AssociationSet>
+    <AssociationSet Name="FK__categoria__id_ca__46E78A0C" Association="Self.FK__categoria__id_ca__46E78A0C">
+      <End Role="categoria" EntitySet="categoria" />
+      <End Role="categoria_productos" EntitySet="categoria_productos" />
+    </AssociationSet>
+    <AssociationSet Name="FK__categoria__id_pr__45F365D3" Association="Self.FK__categoria__id_pr__45F365D3">
+      <End Role="producto" EntitySet="producto" />
+      <End Role="categoria_productos" EntitySet="categoria_productos" />
+    </AssociationSet>
+    <AssociationSet Name="FK__producto__tipo__440B1D61" Association="Self.FK__producto__tipo__440B1D61">
+      <End Role="tipo" EntitySet="tipo" />
+      <End Role="producto" EntitySet="producto" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

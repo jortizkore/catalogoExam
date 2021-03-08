@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="catalogoModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="categoria">
+    <Key>
+      <PropertyRef Name="id_categoria" />
+    </Key>
+    <Property Name="id_categoria" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="categoria1" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="categoria_padre" Type="Int32" />
+    <NavigationProperty Name="categoria11" Relationship="Self.FK__categoria__categ__403A8C7D" FromRole="categoria" ToRole="categoria1" />
+    <NavigationProperty Name="categoria2" Relationship="Self.FK__categoria__categ__403A8C7D" FromRole="categoria1" ToRole="categoria" />
+    <NavigationProperty Name="productoes" Relationship="Self.categoria_productos" FromRole="categoria" ToRole="producto" />
+  </EntityType>
+  <EntityType Name="producto">
+    <Key>
+      <PropertyRef Name="id_producto" />
+    </Key>
+    <Property Name="id_producto" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="nombre_producto" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="descripcion" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="tipo" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="tipo1" Relationship="Self.FK__producto__tipo__440B1D61" FromRole="producto" ToRole="tipo" />
+    <NavigationProperty Name="categorias" Relationship="Self.categoria_productos" FromRole="producto" ToRole="categoria" />
+  </EntityType>
+  <EntityType Name="tipo">
+    <Key>
+      <PropertyRef Name="id_tipo" />
+    </Key>
+    <Property Name="id_tipo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="productoes" Relationship="Self.FK__producto__tipo__440B1D61" FromRole="tipo" ToRole="producto" />
+  </EntityType>
+  <Association Name="FK__categoria__categ__403A8C7D">
+    <End Role="categoria" Type="Self.categoria" Multiplicity="0..1" />
+    <End Role="categoria1" Type="Self.categoria" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="categoria">
+        <PropertyRef Name="id_categoria" />
+      </Principal>
+      <Dependent Role="categoria1">
+        <PropertyRef Name="categoria_padre" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__producto__tipo__440B1D61">
+    <End Role="tipo" Type="Self.tipo" Multiplicity="1" />
+    <End Role="producto" Type="Self.producto" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tipo">
+        <PropertyRef Name="id_tipo" />
+      </Principal>
+      <Dependent Role="producto">
+        <PropertyRef Name="tipo" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="categoria_productos">
+    <End Role="categoria" Type="Self.categoria" Multiplicity="*" />
+    <End Role="producto" Type="Self.producto" Multiplicity="*" />
+  </Association>
+  <EntityContainer Name="catalogoEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="categorias" EntityType="Self.categoria" />
+    <EntitySet Name="productoes" EntityType="Self.producto" />
+    <EntitySet Name="tipoes" EntityType="Self.tipo" />
+    <AssociationSet Name="FK__categoria__categ__403A8C7D" Association="Self.FK__categoria__categ__403A8C7D">
+      <End Role="categoria" EntitySet="categorias" />
+      <End Role="categoria1" EntitySet="categorias" />
+    </AssociationSet>
+    <AssociationSet Name="FK__producto__tipo__440B1D61" Association="Self.FK__producto__tipo__440B1D61">
+      <End Role="tipo" EntitySet="tipoes" />
+      <End Role="producto" EntitySet="productoes" />
+    </AssociationSet>
+    <AssociationSet Name="categoria_productos" Association="Self.categoria_productos">
+      <End Role="categoria" EntitySet="categorias" />
+      <End Role="producto" EntitySet="productoes" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
